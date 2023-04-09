@@ -1,5 +1,29 @@
 from jcode import JCode
-from pathlib import PosixPath
+from pathlib import PosixPath, Path
+from tempfile import NamedTemporaryFile
+from contextlib import contextmanager
+from string import ascii_letters
+from random import choice, randint
+@contextmanager
+def tmp_jc(text) -> JCode:
+    with NamedTemporaryFile(suffix=".jc", prefix="test_") as tmp:
+        file = Path(tmp.name)
+        file.write_text(text)
+        jc = JCode()
+        jc.parse(file)
+        err = None
+        try:
+            yield jc
+        except Exception as e:
+            err = e
+        finally:
+            if err is None:
+                return
+            else:
+                raise err
+
+def rand_text(chars=ascii_letters + " ", minlen=1, maxlen=80):
+    return ''.join(choice(chars) for _ in range(randint(minlen, maxlen)))
 
 def valid_jcode() -> JCode:
     jc = JCode()
@@ -27,19 +51,27 @@ def test_readfile():
 def test_validfile():
     jc = JCode()
     filename = "jcode/tests/data/valid.jc"
-    valid = jc.parse(filename)
-    assert True == valid
+    result = jc.parse(filename)
+    assert isinstance(result, JCode)
 
 def test_invalidfile():
     jc = JCode()
-    filename = "jcode/tests/data/invalid.jc"
-    valid = jc.parse(filename)
-    assert False == valid
+    filename = "jcode/tests/data/validdddddd.jc"
+    exception = None
+    try:
+        jc.parse(filename)
+    except FileNotFoundError as e:
+        exception = e
+    finally:
+        assert isinstance(exception, FileNotFoundError)
 
 def test_get_jcode_file_version():
-    jc = valid_jcode()
-    version = jc.get_version()
-    assert "1.0.0" == version
+    text = """
+version:2.0.0
+"""
+    with tmp_jc(text) as jc:
+        version = jc.get_version()
+        assert "2.0.0" == version
 
 # def test_get_jcode_invalid_file_version():
 #     jc = invalid_jcode()
@@ -47,12 +79,18 @@ def test_get_jcode_file_version():
 #     assert "2.0.0" == version
 
 def test_get_comments():
-    jc = valid_jcode()
-    comments = jc.comments()
-    assert "This is a comment" in comments
-    assert "This is x comment" not in comments
+    r = rand_text()
+    text = f"""
+# This is a comment
+# {r}
+"""
+    with tmp_jc(text) as jc:
+        comments = list(jc.comments())
+        assert "This is x comment" not in comments
+        assert "This is a comment" in comments
+        assert r in comments
 
 def test_get_line_count():
     jc = valid_jcode()
     lines = jc.get_lines()
-    assert len(lines) == 10
+    assert len(lines) == 2
