@@ -82,11 +82,11 @@ def test_get_comments():
 # {r}
 """
     with tmp_jc(text) as jc:
-        comments = list(jc.comments())
-        assert "This is x comment" not in comments
-        assert "This is a comment" in comments
-        assert r in comments
-        assert r2 not in comments
+        comments = jc.comments()
+        assert ["# This is x comment"] not in comments
+        assert ["# This is a comment"] in comments
+        assert [f"# {r}"] in comments
+        assert [f"# {r2}"] not in comments
 
 def test_get_line_count():
     text = f"""# This is a comment

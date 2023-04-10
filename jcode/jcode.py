@@ -24,12 +24,9 @@ class JCode:
         raise Exception("NoVersion")
         
     def comments(self):
-        yield from (line[2:] for line in self.get_blocks() if line.startswith("# "))
+        return [block for block in self.get_blocks() if block[0].startswith("# ")]
 
     def starts_block(self, line):
-        print("====")
-        print(len(line))
-        print(line)
         return len(line) > 0 and not line.startswith(" ")
 
     def get_blocks(self):
