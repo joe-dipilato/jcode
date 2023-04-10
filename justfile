@@ -13,7 +13,7 @@ fzf_installed := if `command -v fzf || true` == "" { "false" } else { "true" }
 git_head := `git rev-list --max-parents=0 HEAD`
 
 # Build and test
-default: build run test
+default: help
 @build:
   true
 @run:

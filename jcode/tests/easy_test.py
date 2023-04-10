@@ -4,9 +4,15 @@ from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 from string import ascii_letters, digits
 from random import choice, randint
+
+def parse_jc(filename: str):
+    """return jcode class"""
+    jc = JCode()
+    return jc.parse(f"jcode/tests/data/{filename}.ini")
+
 @contextmanager
 def tmp_jc(text) -> JCode:
-    with NamedTemporaryFile(suffix=".jc", prefix="test_") as tmp:
+    with NamedTemporaryFile(suffix=".ini", prefix="test_") as tmp:
         file = Path(tmp.name)
         file.write_text(text)
         jc = JCode()
@@ -27,13 +33,13 @@ def rand_text(chars=ascii_letters + " ", minlen=1, maxlen=80):
 
 def valid_jcode() -> JCode:
     jc = JCode()
-    filename = "jcode/tests/data/valid.jc"
+    filename = "jcode/tests/data/valid.ini"
     jc.parse(filename)
     return jc
 
 def invalid_jcode() -> JCode:
     jc = JCode()
-    filename = "jcode/tests/data/invalid.jc"
+    filename = "jcode/tests/data/invalid.ini"
     jc.parse(filename)
     return jc
 
@@ -43,14 +49,14 @@ def test_initialize():
 
 def test_readfile():
     jc = JCode()
-    filename = "jcode/tests/data/valid.jc"
+    filename = "jcode/tests/data/valid.ini"
     jc.parse(filename)
     file = jc.get_file()
     assert True == isinstance(file, PosixPath)
 
 def test_validfile():
     jc = JCode()
-    filename = "jcode/tests/data/valid.jc"
+    filename = "jcode/tests/data/valid.ini"
     result = jc.parse(filename)
     assert isinstance(result, JCode)
 
@@ -82,63 +88,28 @@ def test_get_comments():
 # {r}
 """
     with tmp_jc(text) as jc:
-        comments = list(jc.comments())
-        assert "This is x comment" not in comments
-        assert "This is a comment" in comments
-        assert r in comments
-        assert r2 not in comments
+        comments = jc.comments()
+        assert ["# This is x comment"] not in comments
+        assert ["# This is a comment"] in comments
+        assert [f"# {r}"] in comments
+        assert [f"# {r2}"] not in comments
 
 def test_get_line_count():
-    text = f"""# This is a comment
-# This is another comment
-# This is another other comment
-"""
-    with tmp_jc(text) as jc:
-        lines = jc.getlines()
-        assert len(lines) == 3
+    jc = JCode()
+    filename = "jcode/tests/data/get_line_count.ini"
+    jc.parse(filename)
+    lines = jc.getlines()
+    assert len(lines) == 3
 
 def test_get_blocks():
-    text = f"""# first
-# this is a block comment
-  that continues on this line
-  and this one too
-v=1
-# This is another comment block
-# so is this
-  and the other line
-  here too
-
-# this is a block comment
-  that continues on this line
-  and this one too
-
-v=1
-
-# This is another comment block
-
-# so is this
-  and the other line
-  here too
-"""
-    with tmp_jc(text) as jc:
-        blocks = jc.get_blocks()
-        assert len(blocks) == 9
+    jc = parse_jc("get_blocks")
+    blocks = jc.get_blocks()
+    assert len(blocks) == 9
 
 
 def test_get_comment_blocks():
-    text = f"""# first
-# this is a block comment
-  that continues on this line
-  and this one too
-v=1
-
-# This is another comment block
-
-# so is this
-  and the other line
-  here too
-
-"""
-    with tmp_jc(text) as jc:
-        blocks = jc.comments()
-        assert len(blocks) == 4
+    jc = JCode()
+    filename = "jcode/tests/data/get_comment_blocks.ini"
+    jc.parse(filename)
+    blocks = jc.comments()
+    assert len(blocks) == 4
