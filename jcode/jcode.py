@@ -13,11 +13,16 @@ class JCode:
     def get_file(self):
         return self.file
 
-    def get_lines(self):
+    def getlines(self):
         return self.raw_content.splitlines()
     
     def get_version(self):
-        return "1.0.0"
+        for line in self.getlines():
+            if line.startswith("version:"):
+                version = line.split("version:")[1]
+                return version
+        raise Exception("NoVersion")
+        
     
     def comments(self):
-        yield from (line[2:] for line in self.get_lines() if line.startswith("# "))
+        yield from (line[2:] for line in self.getlines() if line.startswith("# "))

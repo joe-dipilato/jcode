@@ -46,7 +46,10 @@ help:
   just --evaluate version
   just --evaluate description  
   just --list --unsorted --list-prefix '|   ' --list-heading $'\n{{name}} {{version}}:\n'
-
+auto_rebase: _commit_squash_warnings
+  git rebase -i --autosquash ${git_head}
+_commit_squash_warnings:
+  git log --pretty='format:%h %s' | awk '{if ( $2 == ":warning:" ) { print "git commit --squash "$1 }}' | sh || true
 # Push all updates to git
 _git_push *args='update':
   git add -A

@@ -2,7 +2,7 @@ from jcode import JCode
 from pathlib import PosixPath, Path
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
-from string import ascii_letters
+from string import ascii_letters, digits
 from random import choice, randint
 @contextmanager
 def tmp_jc(text) -> JCode:
@@ -66,12 +66,13 @@ def test_invalidfile():
         assert isinstance(exception, FileNotFoundError)
 
 def test_get_jcode_file_version():
-    text = """
-version:2.0.0
+    digit = rand_text(chars=digits, maxlen=1)
+    text = f"""
+version:{digit}.0.4
 """
     with tmp_jc(text) as jc:
         version = jc.get_version()
-        assert "2.0.0" == version
+        assert f"{digit}.0.4" == version
 
 # def test_get_jcode_invalid_file_version():
 #     jc = invalid_jcode()
@@ -79,7 +80,8 @@ version:2.0.0
 #     assert "2.0.0" == version
 
 def test_get_comments():
-    r = rand_text()
+    r = rand_text(minlen=20)
+    r2 = rand_text(minlen=100, maxlen=100)
     text = f"""
 # This is a comment
 # {r}
@@ -89,8 +91,9 @@ def test_get_comments():
         assert "This is x comment" not in comments
         assert "This is a comment" in comments
         assert r in comments
+        assert r2 not in comments
 
 def test_get_line_count():
     jc = valid_jcode()
-    lines = jc.get_lines()
+    lines = jc.getlines()
     assert len(lines) == 2
