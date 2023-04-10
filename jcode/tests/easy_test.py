@@ -94,6 +94,10 @@ def test_get_comments():
         assert r2 not in comments
 
 def test_get_line_count():
-    jc = valid_jcode()
-    lines = jc.getlines()
-    assert len(lines) == 2
+    text = f"""# This is a comment
+# This is another comment
+# This is another other comment
+"""
+    with tmp_jc(text) as jc:
+        lines = jc.getlines()
+        assert len(lines) == 2
