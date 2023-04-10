@@ -50,7 +50,7 @@ help:
 auto_rebase: _commit_squash_warnings
   git rebase -i --autosquash ${git_head}
 _commit_squash_warnings:
-  git log --pretty='format:%h %s' | awk '{if ( $2 == ":warning:" ) { print "git commit --squash "$1 }}' | sh || true
+  git log --pretty='format:%h %s' | awk '{if ( $2 == ":warning:" ) { print "git commit --fixup "$1 }}' | sh || true
 # Push all updates to git
 _git_push comment="update" *args="":
   git add -A
@@ -58,10 +58,10 @@ _git_push comment="update" *args="":
   git push
 # manual push :see_no_evil: :hear_no_evil: :speak_no_evil: :pray:
 git_push comment="And I did not write a comment :cry:" *args="":
-  just _git_push "squash! :see_no_evil: I did not test this. {{ comment }}" {{ args }}
+  just _git_push ":see_no_evil: I did not test this. {{ comment }}" {{ args }}
 # push on fail
 _git_push_fail *args="The test failed, and I did not write a comment :cry:":
-  just _git_push "squash! :warning: {{ args }}"
+  just _git_push ":warning: {{ args }}"
 # push on pass
 _git_push_pass *args="The test passed, but I did not write a comment :cry:": && auto_rebase
   just _git_push ":white_check_mark: {{ args }}"

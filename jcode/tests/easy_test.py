@@ -74,11 +74,6 @@ version:{digit}.0.4
         version = jc.get_version()
         assert f"{digit}.0.4" == version
 
-# def test_get_jcode_invalid_file_version():
-#     jc = invalid_jcode()
-#     version = jc.get_version()
-#     assert "2.0.0" == version
-
 def test_get_comments():
     r = rand_text(minlen=20)
     r2 = rand_text(minlen=100, maxlen=100)
@@ -100,4 +95,31 @@ def test_get_line_count():
 """
     with tmp_jc(text) as jc:
         lines = jc.getlines()
-        assert len(lines) == 2
+        assert len(lines) == 3
+
+def test_get_blocks():
+    text = f"""
+# this is a block comment
+  that continues on this line
+  and this one too
+v=1
+# This is another comment block
+# so is this
+  and the other line
+  here too
+
+# this is a block comment
+  that continues on this line
+  and this one too
+
+v=1
+
+# This is another comment block
+
+# so is this
+  and the other line
+  here too
+"""
+    with tmp_jc(text) as jc:
+        blocks = jc.get_blocks()
+        assert len(blocks) == 8
