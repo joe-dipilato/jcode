@@ -98,7 +98,7 @@ def test_get_line_count():
         assert len(lines) == 3
 
 def test_get_blocks():
-    text = f"""
+    text = f"""# first
 # this is a block comment
   that continues on this line
   and this one too
@@ -122,4 +122,23 @@ v=1
 """
     with tmp_jc(text) as jc:
         blocks = jc.get_blocks()
-        assert len(blocks) == 8
+        assert len(blocks) == 9
+
+
+def test_get_comment_blocks():
+    text = f"""# first
+# this is a block comment
+  that continues on this line
+  and this one too
+v=1
+
+# This is another comment block
+
+# so is this
+  and the other line
+  here too
+
+"""
+    with tmp_jc(text) as jc:
+        blocks = jc.comments()
+        assert len(blocks) == 4

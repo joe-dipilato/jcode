@@ -23,6 +23,24 @@ class JCode:
                 return version
         raise Exception("NoVersion")
         
-    
     def comments(self):
-        yield from (line[2:] for line in self.getlines() if line.startswith("# "))
+        yield from (line[2:] for line in self.get_blocks() if line.startswith("# "))
+
+    def starts_block(self, line):
+        print("====")
+        print(len(line))
+        print(line)
+        return len(line) > 0 and not line.startswith(" ")
+
+    def get_blocks(self):
+        blocks = []
+        block = []
+        for line in self.getlines():
+            if self.starts_block(line):
+                if len(block) > 0:
+                    blocks.append(block)
+                block = [line]
+            else:
+                block.append(line)
+        blocks.append(block)
+        return blocks
