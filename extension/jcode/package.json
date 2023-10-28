@@ -1,0 +1,31 @@
+{
+  "name": "jcode",
+  "displayName": "jcode",
+  "description": "jcode language support",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "jcode",
+      "aliases": ["jcode", "jcode"],
+      "extensions": ["jc"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "jcode",
+      "scopeName": "source.jcode",
+      "path": "./syntaxes/jcode.tmLanguage.json"
+    },
+    {
+      "path": "./syntaxes/injection.json",
+      "scopeName": "todo-comment.injection",
+      "injectTo": ["source.jcode"]
+    }
+  ]
+  }
+}

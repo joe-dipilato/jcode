@@ -82,7 +82,7 @@ printmax1: a b
 
 printmax: a b ( a > b ( .p “got max from first”, .p a ) | a < b ( .p “got max from second” , .p b ) | ( .p “no max” , .p 0 ) )
 
-# note that the else / elif operator is identical to logical or, since we don’t evaluate content after the first true value in an “or” statement.
+# note that the else / elif operator is identical to logical or, since we don't evaluate content after the first true value in an “or” statement.
 
 # Extra space around a statement is equivalent to wrapping the statement in ()
 
@@ -287,7 +287,7 @@ v5 = 2 & 3 #= 1
 v6 = | 3 #= 1
 v7 = | -3 #= 0
 
-# since @ is return, it doesn’t make sense to assign it to a value
+# since @ is return, it doesn't make sense to assign it to a value
 # as such, if it is assigned, it returns a lambda function
 v8 = @ 3 #= x: @ 3
 v9 = 1 @ 3 #= 1 x: @ 3
@@ -389,10 +389,10 @@ d:a n = > v=n+1 ; a:i:x > sq=x*x ; s+sq+n ; s>v > <- i < | > v+1 << a:j > Print(
 d:a n = > v=n+1 ; a:i:x > sq=x*x ; s+sq+n ; s>v
   <- i < | > v+1 << a:j > Print(j) < s i
 
-# this replaced the ‘ > ’ with a new line and an indent
-# every time ‘ > ’ appears it is identical to being replaced by a new indented line
-# same with ‘ < ‘ a new line de-indented and ‘ << ‘ double de-indent etc..
-# the ‘ | ‘ is the or operator
+# this replaced the ' > ' with a new line and an indent
+# every time ' > ' appears it is identical to being replaced by a new indented line
+# same with ' < ' a new line de-indented and ' << ' double de-indent etc..
+# the ' | ' is the or operator
 # when it begins a line it evaluates the previous statement at the same level and only
 # triggers if the statement is false.
 

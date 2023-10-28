@@ -1,0 +1,1014 @@
+# line comment
+nothing
+# comment indent block
+    comment indent block
+  comment indent block
+nothing
+## comment block
+  comment block
+comment block
+##
+
+#
+nothing
+#
+
+##
+nothing
+##
+
+#. doc line comment
+nothing
+#. doc comment indent block
+    doc comment indent block
+  doc comment indent block
+nothing
+##. doc comment block
+  doc comment block
+doc comment block
+##.
+
+#.
+nothing
+#.
+
+##.
+nothing
+##.
+
+#: doc line comment
+nothing
+#: doc comment indent block
+    doc comment indent block
+  doc comment indent block
+nothing
+##: doc comment block
+  doc comment block
+doc comment block
+##:
+
+#:
+nothing
+#:
+
+##:
+nothing
+##:
+
+#! doc line comment
+nothing
+#! doc comment indent block
+    doc comment indent block
+  doc comment indent block
+nothing
+##! doc comment block
+  doc comment block
+doc comment block
+##!
+
+#!
+nothing
+#!
+
+##!
+nothing
+##!
+
+aaa #a
+aaa #a a
+aaa #= a
+aaa # a
+aaa #########
+aaa ######### 
+aaa ######### a
+aaa #########a
+aaa #########a 
+aaa #
+aaa # 
+aaa #a
+aaa #a 
+#a
+#a a
+#= a
+# a
+#########
+######### 
+######### a
+#########a
+#########a 
+#
+# 
+#a
+#a 
+aaa#a
+aaa#a a
+aaa#= a
+aaa# a
+aaa########
+aaa########
+aaa########
+aaa########
+aaa########
+aaa#
+aaa# 
+aaa#a
+aaa#a 
+
+
+#+pname plugin line comment
+nothing
+#+pname plugin comment indent block
+    plugin comment indent block
+  plugin comment indent block
+nothing
+##+pname plugin comment block
+  plugin comment block
+plugin comment block
+##+
+
+#+pname
+nothing
+#+pname
+
+##+pname
+nothing
+##+
+
+#= test line comment
+nothing
+#= test comment indent block
+    test comment indent block
+  test comment indent block
+nothing
+##= test comment block
+  test comment block
+test comment block
+##=
+
+#=
+nothing
+#=
+
+##=
+nothing
+##=
+
+### important line
+nothing
+### important indent block
+  important indent block
+    important indent block
+nothing
+#### important block
+  important block
+important block
+####
+
+###
+nothing
+###
+
+####
+nothing
+####
+
+nothing
+  # indent
+  nothing # fdafdsa gdadgd
+
+### expect
+# expect
+1 #= 1
+#= 57
+57
+### ####################################
+### Variables
+### ####################################
+# " 0 " is Boolean false
+# " 1 " is Boolean true
+# "~" is the None value
+# = is assignment for new symbols
+# == is comparison for existing symbols
+#= 1
+45 == 45
+#= 0
+45 == 46
+#= 7
+v = 7
+#= 1
+v == 7
+#= 0
+v == 8
+r1 = v == 7 #= 1
+r2 = v == 8 #= 0
+r1 == r2 #= 0
+r3 = 9 #= 9
+### ####################################
+### Functions
+### ####################################
+# Functions are greedy, a function will accept
+  every item to the end of the line as it's argument
+# This takes argument a and returns it
+returnme a: a
+# function calls start with '.'
+.returnme "A" #= "A"
+.returnme 1, 2, 3 #= 1 2 3
+# ".L" logs
+.L "hello world"
+# func_name arg1 ...: expressions
+log a: .L a
+.log "hi" #= .L "hi"
+# " " delimits sequential statements
+log2 a: ( .L a ) ( .L a )
+.log2 "hi" #= .L "hi\nhi"
+# Functions only receive and return a single argument
+### ####################################
+### Return @
+### ####################################
+# @ returns
+# @ is a special type of function. and behaves like functions do
+ret1: @ "A" #= "A"
+isbigger a, b: @ a > b
+.isbigger 5, 2 #= 1
+.isbigger 2, 5 #= 0
+# The last evaluated statement is always returned
+# isbigger receives a list containing 2 elements
+isbigger a, b: a > b
+### ####################################
+### Indents
+### ####################################
+# Indented blocks are evaluated if the root evaluates to true
+ind: #= 0
+  1
+    0
+      3
+# First ind: is evaluated. it is true
+  then 1 is evaluated. it is true
+  then 0 is evaluated. it is false.
+    don't evaluate the indented 3
+  return the last evaluated value, which was 0
+# we can do the same with a variable
+ind = #= 0
+  1
+    0
+      3
+ind2 = #= 3
+  1
+    2
+      3
+# ind: evaluates the function address
+# ind= evaluates the variable address
+# an example with returns
+ind2 a, b, c:
+  a
+    b
+      c
+        @ c
+      @ b
+    @ a
+  0
+# This is functionally equivalent to the following python function
+##. example
+def ind2(a, b, c):
+  if a:
+    if b:
+      if c:
+        return c
+      return b
+    return a
+  return 0
+##.
+# an example without returns
+ind3 a, b, c:
+  a
+    b
+      c
+        .L c
+      .L b
+    .L a
+  0
+# This is functionally equivalent to the following python function
+##. example
+def ind2(a, b, c):
+  if a:
+    if b:
+      if c:
+        print(c)
+      print(b)
+    print(a)
+  return 0
+##.
+### ####################################
+### Indent equivalent And
+### ####################################
+# an indent is equivalent to the logical and operator
+ind: #= 0
+  1
+    0
+      3
+# Equivalent
+andind: 1 & 0 & 3 #= 0
+# Example
+ind2 = #= 3
+  1
+    2
+      3
+# Equivalent
+# note that the 3 is evaluated last so it is returned
+andind2 = 1 & 2 & 3 #= 3
+# Example
+ind2 a, b, c:
+  a
+    b
+      c
+        @ c
+      @ b
+    @ a
+  0
+# Equivalent
+andind2 a, b, c:
+  a &
+    (b &
+      (c &
+        (@ c)
+      @ b)
+    @ a)
+  0
+and2ind2 a, b, c: a & (b & (c & (@ c) @ b) @ a) 0
+### ####################################
+### Logical Operators
+### ####################################
+# Like functions, operators are greedy.
+  Operators are treated the same as other functions
+  except that the first argument is the value before the operator
+and3ind2 a, b, c: a & b & c & @ c.. @ b.. @ a.. 0
+# Note that this syntax is usually less readable
+### ####################################
+### List
+### ####################################
+# A list is represented by a series of values
+[ 1, 2, 3 ] #= [1, 2, 3]
+a1 = 1, 2, 3 #= [1, 2, 3]
+v1, v2, v3 = a1 #= [1, 2, 3]
+v4, v5, v6 = 4 5 6 #= [4, 5, 6]
+a2 = v4, v5, v6 #= [4, 5, 6]
+# & is logical and operator
+and a b: a & b
+# since 3 was the last evaluated statmenet it is returned
+.and 5, 3 #= 3
+.and 3, 5 #= 5
+.and 5, 0 #= 0
+# Since we know 0 & 5 is 0 by the time we evaluate 'a' we
+  don't have to evaluate 'b' and we return right
+  after evaluating 'a' which is '0'. 'a' is returned
+.and 0, 5 #= 0
+# Lists can span multiple lines with the ',' key
+[ 1, 2, 3 ] #= 1, 2, 3
+1, 2, 3 #= 1, 2, 3
+1,
+2,
+3 #= 1, 2, 3
+alist = [ 1, 2, 3 ] 
+alist = 1, 2, 3
+alist =
+  1,
+  2,
+  3
+### ####################################
+### Sequence
+### ####################################
+# (...) evaluates to the return value of the contained statmenets
+zerotwo: ( 0 2 )
+# The parens are implicit for functions
+zerotwo: 0 2
+# Since 2 is evaluated after 0, the value 2 is returned
+.zerotwo #= 2
+# [...] is a list type
+onetwothreefour: [1, 2] [3, 4]
+.onetwothreefour #= [3, 4]
+onetwothreefour2: [1, 2], [3, 4]
+.onetwothreefour #= [ [1, 2], [3, 4] ]
+# [1, 2] [3, 4] is a sequence
+  [1, 2], [3, 4] is a list
+# zerothree are all the same list
+zerothree: ( 0, 3 )
+zerothree: 0, 3
+zerothree: [ 0, 3 ]
+.zerothree #= [ 0, 3 ]
+# zerotwo are also the same sequence
+zerotwo: ( 0 2 )
+zerotwo: 0 2
+.zerotwo #= 2
+# sequences can span multiple lines
+( 1 2 3 ) #= 3
+1 2 3 #= 3
+1
+2
+3 #= 3
+aseq = ( 1 2 3 ) #= 3
+aseq = 1 2 3 #= 3
+aseq = #= 3
+  1
+  2
+  3
+### ####################################
+### Function sequence .
+### ####################################
+# This function logs a and b and returns .L b, which is the string b
+l2 a, b: ( .L a ) ( .L b )
+#= 
+  .L
+    X
+    Y
+  Y
+.l2 "X", "Y"
+# We might think that this is the same, but it is not.
+l3 a, b: .L a .L b
+#= 
+  .L
+    Y
+    Y
+  Y
+.l3 "X", "Y"
+# Adding implicit parentheses, this is equivalent to
+l3 a, b: ( .L ( a ( .L b ) ) )
+# This is because functions are greedy and will accept
+  all arguments to the end of the line.
+  So when executing it with "X". "Y"
+    first ( .L b ) logs "Y" and evaluates to ( "Y" )
+    second ( a ( "Y" ) ) evaluates to ( "X" "Y" )
+      which evaluates to ( "Y" )
+    third ( .L ( "Y" ) ) logs "Y" and evaluates to ( "Y" )
+    then the function returns "Y"
+# The "." character ends the line for function arguments.
+l4 a, b: ( .L a ) ( .L b )
+# Is equivalent to.
+l4 a, b: .L a. .L b
+# The . only applies to the preceding function
+l5 a, b: .L .L a. .L b
+# Equivalent to
+l5 a, b: .L ( .L a. .L b )
+#= 
+  .L
+    X
+    Y
+    Y
+  Y
+.l5 "X" "Y"
+### ####################################
+### Function list ;
+### ####################################
+# To terminate the function and be part of a list
+  use the ; character instead of .
+  This is functionally equivalent to writing .,
+l6 a, b: .L .L a; .L b
+l6 a, b: .L ( .L a; .L b )
+#= 
+  .L
+    X
+    Y
+    X, Y
+  X, Y
+.l6 "X" "Y"
+# mixing them
+l7 a, b, c: .L .L a; .L b.. .L c
+l7 a, b, c: ( .L .L a; .L b.. .L c )
+l7 a, b, c: ( .L .L a; ( .L b ). ( .L c ) )
+l7 a, b, c: ( .L ( .L a ), ( .L b ). ( .L c ) )
+l7 a, b, c: ( ( .L ( .L a ), ( .L b ) ) ( .L c ) )
+# ( ( .L ( .L "X" ), ( .L "Y" ) ) ( .L "Z" ) )
+    first evaluate ( .L "X" )
+      Log X, return "X"
+  ( ( .L "X", ( .L "Y" ) ) ( .L "Z" ) )
+    second evaluate ( .L "Y" )
+      Log Y, return "Y"
+  ( ( .L  "X", "Y" ) ( .L "Z" ) )
+    third evaluate ( .L  "X", "Y" )
+      Log [ X, Y ]. return [ "X", "Y" ]
+  ( [ "X", "Y" ] ( .L "Z" ) )
+    fourth evaluate ( .L "Z" )
+      Log Z, return "Z"
+  ( [ "X", "Y" ] "Z" )
+    fifth evaluate ( [ "X", "Y" ] "Z" )
+      return "Z"
+#= 
+  .L
+    X
+    Y
+    X, Y
+    Z
+  Z
+.l7 "X", "Y", "Z"
+### ####################################
+### OR operator
+### ####################################
+# "|" is the logical or operator.
+  it evaluates to the first non-zero value or zero
+or3 a, b, c: a | b | c
+.or3 3, 2, 1 #= 3
+.or3 0, 2, 1 #= 2
+.or3 3, 0, 1 #= 3
+.or3 3, 2, 0 #= 3
+# an indent is identical to logical and of the indented values in parens
+andor a, b, c: ( a & ( b | c ) )
+andor a, b, c: a & ( b | c )
+andor a, b, c: 
+  a & ( b | c )
+andor a, b, c: 
+  a
+    b | c
+# here is how andor would evaluate
+# 1 is good, so we check (2 | 3). 2 is good, so return it
+.andor 1, 2, 3 #= 2
+# a is 0 so return it
+.andor 0, 2, 3 #= 0
+# 1 is good, so check (2 | 0). 2 is good, so return it
+.andor 1, 2, 0 #= 2
+# 1 is good, so check (0 | 3). 0 is not good. return c
+.andor 1, 0, 3 #= 3
+# 1 is good, so check (0 | 0). 0 is not good. return c
+# note that 1 0 3 and 1 0 0 both returned the last element
+  and didn't need to evaluate it in the or statmenet
+  This is the case with all or statements,
+  we can always return the last element without evaluating it
+.andor 1, 0, 0 #= 0
+# to create a max function
+max a, b:
+  a > b
+    @ a
+  @ b
+max a, b:
+  ( ( a > b ) & ( @ a ) )
+  ( @ b )
+max a, b:
+  ( ( a > b ) & ( @ a ) ) ( @ b )
+max a, b: ( ( ( a > b ) & ( @ a ) ) ( @ b ) )
+max a, b: ( ( a > b & ( @ a ) ) @ b )
+max a, b: ( a > b & @ a ) @ b
+# another example
+myexample a, b:
+  a > 5
+    .L "A"
+    .L a
+    b > 5
+      .L "B"
+      .L b
+    .L "C"
+  .L "D"
+myexample a, b: a > 5 & ( .L "A". .L a. b > 5 & ( .L "B". .L b ) .L "C" ) .L "D"
+# "|" is also the else / elif operator
+printmax a b:
+  a > b
+    .L "A"
+    .L a
+  | a < b
+    .L "B"
+    .L b
+  |
+    .L "Z"
+    .L 0
+printmax a b:
+  a > b
+    .L "A". .L a
+  | a < b
+    .L "B". .L b
+  |
+    .L "Z". .L 0
+printmax a b:
+  a > b & ( .L "A". .L a )
+  | a < b & ( .L "B". .L b )
+  | (.L "Z". .L 0)
+# A line starting with an operator is a continuation of the previous statement 
+printmax a b:
+  a > b & ( .L "A". .L a ) | a < b & ( .L "B". .L b ) | (.L "Z". .L 0)
+# note that the else / elif operator is identical to logical or, since we don't evaluate content after the first true value in an "or" statement.
+printmax a b: a > b & ( .L "A". .L a ) | a < b & ( .L "B". .L b ) | (.L "Z". .L 0)
+addex a b c:
+  a
+    b
+  + b
+    c
+  + c
+    a
+addex a b c:
+  a & ( b )
+  + b & ( c )
+  + c & ( a )
+addex a b c: a & ( b ) + b & ( c ) + c & ( a )
+# 1 & ( 2 ) + 2 & ( 3 ) + 3 & ( 1 )
+  ( 2 )     + 2 & ( 3 ) + 3 & ( 1 )
+  ( 2 )     + ( 3 )     + ( 1 )
+.addex 1, 2, 3 #= 6
+# 0 & ( 2 ) + 2 & ( 3 ) + 3 & ( 0 )
+  ( 0 )     + 2 & ( 3 ) + 3 & ( 0 )
+  ( 0 )     + ( 3 )     + ( 0 )
+.addex 0, 2, 3 #= 3
+# 1 & ( 0 ) + 0 & ( 3 ) + 3 & ( 1 )
+  ( 0 )     + 0 & ( 3 ) + 3 & ( 1 )
+  ( 0 )     + ( 0 )     + ( 1 )
+.addex 1, 0, 3 #= 1
+# 1 & ( 2 ) + 2 & ( 0 ) + 0 & ( 1 )
+  ( 2 )     + 2 & ( 0 ) + 0 & ( 1 )
+  ( 2 )     + ( 0 )     + ( 0 )
+.addex 1, 2, 0 #= 2
+# reviewing list vs sequence
+  when space delimited, you have a list.
+  all elements in a list are always evaluated
+# The .L statement returns the string
+# Recall printmax
+pm a, b: a > b & ( .L "A". .L a ) | a < b & ( .L "B". .L b ) | (.L "Z". .L 0)
+#= 
+  .L
+    B
+    2
+    A
+    4
+    Z
+    0
+  [ "2", "4", "0" ]
+pmres = (.pm 1, 2) (.pm 4, 3) (.pm 5, 5) 
+pmres #= [ "2", "4", "0" ]
+# This performs the log operations
+  and evaluates to [ "2", "4", "0" ]
+  This is based on the last evaluated statement for each function.
+  the .L statement in this instance
+# Let's update this to both print the value and return the numerical value
+pm2 a, b: a > b & ( .L a. a ) | a < b & ( .L b. b ) | ( .L "0". 0 )
+#= 
+  .L
+    2
+    4
+    0
+  [ 2, 4, 5 ]
+pm2res = (.pm2 1, 2), (.pm2 4, 3), (.pm2 5, 5)
+pm2res #= [ 2, 4, 5 ]
+# this is the same as
+pm2res = [ .pm2 1, 2; .pm2 4, 3; .pm2 5, 5 ]
+# This is different from
+#= 
+  .L
+    2
+    4
+    0
+  5
+pm2res2 = .pm2 1, 2. .pm2 4, 3. .pm2 5, 5
+pm2res2 #= 5
+# This is the same as
+pm2res2 = (.pm2 1, 2) (.pm2 4, 3) (.pm2 5, 5)
+# Let's use .T INT to convert to int
+ti a: .T INT a
+pm3 a b: a > b & ( .ti .L a. ) | a < b & ( .ti .L b. ) | ( .ti .L "0". )
+
+# This functions similar to the above
+#= 
+  .L
+    2
+    4
+    0
+  [ 2, 4, 5 ]
+pm3res = (.pm2 1 2) (.pm2 4 3) (.pm2 5 5)
+pm3res #= [ 2, 4, 5 ]
+# This will return an error if non integer values are provided however
+.pm2 "a" "b" #= .L "b", "b"
+.pm3 "a" "b" #= .L "b", ERR
+# Functions arguments can be set by indented values
+.L ( "A", "B", "C" ) #= .L C
+# This is the same as
+.L
+  "A"
+  "B"
+  "C"
+# this only Logs "C" since that is what was returned
+.L [ "A", "B", "C" ] #= .L [ A, B, C ]
+.L "A" "B" "C" #= .L [ A, B, C ]
+.L #= .L [ A, B, C ]
+  "A",
+  "B",
+  "C" 
+### ####################################
+### Sequence vs List
+### ####################################
+[ a, b, c ] #= [ a, b, c ] 
+( a b c ) #= c
+a, b, c #= [ a, b, c ] 
+a b c #= c
+[ a b c ] #= [ c ]
+( a, b, c ) #= [ a, b, c ]
+a,
+b,
+c #= [a, b, c]
+a
+b
+c #= c
+# Every values has properties.
+# you can append
+# you can get errors / or
+a = 1
+a.len() #= 1
+a.log() #= 1
+a.append("x")
+a.len() #= 2
+a.log() #= 1, "x"
+a.append("yy")
+a.len() #= 3
+a.log() #= 1, "x", "yy"
+a.extend("z")
+a.len() #= 4
+a.log() #= 1, "x", "yy", z
+a.extend("w")
+a.len() #= 5
+a.log() #= 1, "x", "yy", zw
+a.append([3, 4])
+a.len() #= 6
+a.log() #= 1, "x", "yy", zw, [3, 4]
+a.extend([5, 6])
+a.len() #= 8
+a.log() #= 1, "x", "yy", zw, [3, 4], 5, 6
+
+
+
+
+
+# function arguments are provided as a tuple which can be wrapped in parens, or indented on the next line.
+# the following are identical
+res = myfun 1 2
+res = myfun 1 , 2
+res = myfun ( 1 2 )
+res = myfun ( 1 , 2 )
+res = myfun
+  1 2
+res = myfun
+  1 , 2
+res = myfun
+  ( 1 , 2 )
+res =
+  myfun
+    1
+    2
+res =
+  myfun
+    1 ,
+    2
+
+# more examples
+add: a b ( < a + b )
+subtract: a b ( < a - b )
+res = #= 7
+  .add
+    .add
+      1
+      3
+    .subtract
+      5
+      2
+res = ( #= 7
+  .add (
+    .add (
+      1 ,
+      3 ) ,
+    .subtract (
+      5 ,
+      2 ) ) )
+res = ( .add ( .add ( 1 , 3 ) , .subtract ( 5 , 2 ) ) ) #= 7
+res = .add ( .add ( 1 , 3 ) , .subtract ( 5 , 2 ) ) #= 7
+res = .add ( .add ( 1 3 ) , .subtract ( 5 2 ) ) #= 7
+res = .add ( .add 1 3 , .subtract 5 2 ) #= 7
+res = .add
+  .add 1 3 , .subtract 5 2 #= 7
+res = .add #= 7
+  .add 1 3 
+  .subtract 5 2 
+
+get1: < 1
+mul1: a ( < a * 2 )
+res = add get1 subtract 5 2 #= 4
+
+res = get1 2 #= 1 2
+res = get1 mul1b get1 #
+
+
+printmax4 a b c d:
+  .L max
+    max
+      a b
+    max
+      c d
+
+printmax4 a b c d: @ max max a b max c d
+
+printmax5 a b c d:
+  .L max
+    a max
+      b max
+        c d
+
+printmax5 a b c d: @ max a max b max c d
+
+printallsamebool a b c:
+  a & b & c
+    .L 1
+  | a | b | c
+    .L ~
+  |
+    .L 0
+  
+printallsamebool a b c: a & b & c @ 1 | a | b | c @ ~ | @ 0
+
+getallsamebool a b c:
+  a & b & c
+    < 1
+  a | b | c
+    < ~
+  < 0
+
+getallsamebool a b c: a & b & c ( < 1 ) a | b | c ( < ~ ) < 0
+
+isallsamebool a b c:
+  < a & b & c  |  !  a | b | c
+isallsamebool a b c: <  a & b & c  |  !  a | b | c
+isallsamebool a b c: < a&b&c | ! a|b|c
+
+isallsamebool2 a b c:
+  all := a & b & c
+    < all
+  | any := ! a | b | c
+    < any
+isallsamebool2 a b c: all := a & b & c < all | any := ! a | b | c < any
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+
+
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+#    |
+# new letters followed by space = function declaration
+
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+#                |
+# Letters before : = arguments
+
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+#                     |
+# old letters = var reference
+
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+#                       |
+# & is the logical and operator
+
+example a b c: a ( < a ) b ( < b ) c ( < c )
+v1 = example 5 0 10 #= 5
+v2 = example 0 10 5 #= 10
+v3 = example -1 0 -2 #= ~
+v4 = -3
+
+# a variable is evaluated for a condition check when used as a function
+# numbers > 0 pass the condition check
+v1 (.L "v1 > 0") #= @ "v1 > 0"
+v2 (.L "v2 > 0") #= @ "v2 > 0"
+v3 (.L "v3 > 0") #= ~
+v4 (.L "v4 > 0") #= ~
+57 (.L "57 > 0") #= @ "57 > 0"
+0 (.L "0 > 0") #= ~
+-7 (.L "-7 > 0") #= ~
+~ (.L "~ > 0") #= ~
+
+a = 5
+v1 = a @ 1
+v1 = a ( @ 1 )
+# Is v1 a tuple of ( 5 , 1 )?
+# Is v1 the evaluation of the body of a? #= 1 ?
+# in order to disambiguate, tuples always have a comma between terms…?
+
+result = func arg arg
+
+v1 = 1 & 0 #= 0
+v2 = 1 | 0 #= 1
+v3 = 1 ( @ 3 ) #= 3
+v3b = 1
+  @ 3 #= 3
+v4 = 1 3 #= 1 3
+v5 = 2 & 3 #= 1
+v6 = | 3 #= 1
+v7 = | -3 #= 0
+
+# since @ is return, it doesn't make sense to assign it to a value
+# as such, if it is assigned, it returns a lambda function
+v8 = @ 3 #= x: @ 3
+v9 = 1 @ 3 #= 1 x: @ 3
+t1 t2 = v9
+t1 #= 1
+t2 #= x: @ 3
+w1 w2 = 1 @ 3 #= 1 x: @ 3
+w1 #= 1
+w2 #= x: @ 3
+
+
+
+
+
+
+
+isallsamebool3 a b c: a & b & c < 1 | ! a | b | c < 1 < 0
+#                       |
+# & is the logical and operator
+
+
+
+
+
+
+…………
+
+C=0 #:counter ;{C} is zero
+F:A B C #:add-l :add-r C:subtract
+  D=3 #:add
+  A+B-C+D #:sum
+V=F 50 700 100 #:calculated-sum
+print V #=653
+F:A B #:
+
+
+# 2sum
+two-sum:a n =
+  a:i:f
+    a:j:s
+      f+s==n
+        <- i j
+
+
+
+
+two-sum:a n = > a:i:f > a:j:s > f+s==n > <- i j
+
+# :do-stuff function declaration
+d:a n = #:array:number
+  # indent
+  v=n+1 #:value
+  # iterate over $a
+  a:i:x #:index:item
+    # indent
+    sq=x*x #:x-squared set $sq to $x times $x
+    # add $x and $n to $s
+    #:running-sum declare $s initialize to default of implied type
+    s+sq+n
+    # if $s is greater than $v return $i
+    s>v
+      # indent
+      # return $i
+      <- i
+    # else add 1 to $v
+    |
+      # indent
+      v+1
+  # iterate over $a again, but no index. No reusing variables
+  a:j #:item we can reuse annotations
+    # indent
+    # call the print function with $j
+    print(j)
+  # if we have reached the end
+  # return $s and $i
+  # last statement is returned
+  s i
+
+# again without comments
+d:a n =
+  v=n+1
+  a:i:x
+    sq=x*x
+    s+sq+n
+    s>v
+      <- i
+    |
+      v+1
+  a:j
+    Print(j)
+  s i
+
+# again inline
+d:a n = > v=n+1 ; a:i:x > sq=x*x ; s+sq+n ; s>v > <- i < | > v+1 << a:j > Print(j) < s i
+
+# as you can see, spaces are important!
+# we can also break it up like this :
+
+d:a n = > v=n+1 ; a:i:x > sq=x*x ; s+sq+n ; s>v
+  <- i < | > v+1 << a:j > Print(j) < s i
+
+# this replaced the ' > ' with a new line and an indent
+# every time ' > ' appears it is identical to being replaced by a new indented line
+# same with ' < ' a new line de-indented and ' << ' double de-indent etc..
+# the ' | ' is the or operator
+# when it begins a line it evaluates the previous statement at the same level and only
+# triggers if the statement is false.
+
+# here is an implementation of the max function
+max:a b > a>b > <- a < | > <- b
+
+# if $b is true and $n - $k are greater than 0 return $s1 otherwise return $s2
+select:b n k s1 s2 = b > n-k>0 > <- s1 << s2
+  
+b=1
+n=4
+k=3
+s1="a"
+s2="b"
+v=b > n-k>0 > <- s1 << s2
+v2=select(b n k s1 s2)
+Print(v==v2) #= true

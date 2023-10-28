@@ -13,16 +13,26 @@ fzf_installed := if `command -v fzf || true` == "" { "false" } else { "true" }
 git_head := `git rev-list --max-parents=0 HEAD`
 
 # Build and test
-default: help
-@build:
+default: help 
+@build: 
   true
 @run:
   python3 -m jcode
+watch:
+  #!/usr/bin/env bash
+  while [ true ]; do
+    # Wait until a file changes
+    watch -g "find . -type f -exec ls -lt {} + | head"
+    clear
+    just test
+    find . -type f -exec ls -lt {} + | head -1
+    sleep 10
+  done
 test *args='':
   #!/usr/bin/env bash
-  pytest {{ args }}
+  pytest -s {{ args }}
   if [ $? -eq 0 ]; then
-    if ! [ -f build/.pass ]; then
+    if ! [ -f build/.pass ]; then 
       read -p "Pass commit comment: " COMMENT
       just _git_push_pass "${COMMENT}"
       rm build/.fail || true

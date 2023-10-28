@@ -1,0 +1,262 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "jcode",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#important"
+    },
+    {
+      "include": "#blockcomment"
+    },
+    {
+      "include": "#doccomment"
+    },
+    {
+      "include": "#datacomment"
+    },
+    {
+      "include": "#rawcomment"
+    },
+    {
+      "include": "#plugincomment"
+    },
+    {
+      "include": "#def"
+    },
+    {
+      "include": "#testcomment"
+    },
+    {
+      "include": "#value"
+    },
+    {
+      "include": "#variable"
+    },
+    {
+      "include": "#const"
+    },
+    {
+      "include": "#invalid"
+    },
+    {
+      "include": "#call"
+    }
+  ],
+  "repository": {
+    "infun": {
+      "patterns": [
+        {
+          "name": "markup.underline.link",
+          "match": "\\.[A-Za-z0-9]+ [^\\.]+[^ \\(]+\\."
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "@"
+        },
+        {
+          "name": "keyword.operator",
+          "match": ":"
+        },
+        {
+          "name": "keyword.operator",
+          "match": "\\|"
+        }
+      ]
+    },
+    "important": {
+      "patterns": [
+        {
+          "name": "markup.heading",
+          "begin": "^### .*",
+          "while": "^ "
+        },
+        {
+          "name": "markup.heading",
+          "begin": "^#### .*",
+          "end": "^####$"
+        }
+      ]
+    },
+    "invalid": {
+      "patterns": [
+        {
+          "name": "invalid",
+          "match": "#.*"
+        }
+      ]
+    },
+    "blockcomment": {
+      "patterns": [
+        {
+          "name": "comment.block",
+          "begin": "^# .*[^\\s]+.*",
+          "while": "^ "
+        },
+        {
+          "name": "comment.block",
+          "begin": "^## .*[^ ].*",
+          "end": "^##$"
+        },
+        {
+          "name": "comment.line.number-sign",
+          "match": "\\s#+[^\\!:\\+\\.#\\=].*"
+        },
+        {
+          "name": "comment.line.number-sign",
+          "match": "\\s#+[\\!:\\+\\.#\\=]$"
+        },
+        {
+          "name": "comment.line.number-sign",
+          "match": "^#+[^\\!:\\+\\.#\\=].*"
+        },
+        {
+          "name": "comment.line.number-sign",
+          "match": "^#+[\\!:\\+\\.#\\=][^ ]*$"
+        }
+      ]
+    },
+    "doccomment": {
+      "patterns": [
+        {
+          "name": "string.quoted",
+          "begin": "^##\\. .*",
+          "end": "^##\\.$"
+        },
+        {
+          "name": "string.quoted",
+          "begin": "^#\\. .*",
+          "while": "^ "
+        }
+      ]
+    },
+    "datacomment": {
+      "patterns": [
+        {
+          "name": "string.yaml",
+          "begin": "^##: .*",
+          "end": "^##:$"
+        },
+        {
+          "name": "string.yaml",
+          "begin": "^#: .*",
+          "while": "^ "
+        }
+      ]
+    },
+    "rawcomment": {
+      "patterns": [
+        {
+          "name": "string.regexp",
+          "begin": "^##\\! .*",
+          "end": "^##\\!$"
+        },
+        {
+          "name": "string.regexp",
+          "begin": "^#\\! .*",
+          "while": "^ "
+        }
+      ]
+    },
+    "testcomment": {
+      "patterns": [
+        {
+          "name": "string.regexp",
+          "begin": "^##\\= .*",
+          "end": "^##\\=$"
+        },
+        {
+          "name": "string.regexp",
+          "begin": "^#\\= .*",
+          "while": "^ "
+        },
+        {
+          "name": "string.regexp",
+          "match": "^#\\= .*"
+        },
+        {
+          "name": "string.regexp",
+          "match": " #\\= .*"
+        }
+      ]
+    },
+    "plugincomment": {
+      "patterns": [
+        {
+          "name": "string.regexp",
+          "begin": "^##\\+[a-z]+ .*",
+          "end": "^##\\+$"
+        },
+        {
+          "name": "string.regexp",
+          "begin": "^#\\+[a-z]+ .*",
+          "while": "^ "
+        }
+      ]
+    },
+    "value": {
+      "patterns": [
+        {
+          "name": "constant.numeric",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "const": {
+      "patterns": [
+        {
+          "name": "constant.language",
+          "match": "\\b[A-Z][A-Z0-9]*\\b"
+        }
+      ]
+    },
+    "variable": {
+      "patterns": [
+        {
+          "name": "variable.name",
+          "match": "\\b[a-z][a-z0-9]*\\b"
+        }
+      ]
+    },
+    "def": {
+      "match": "^([a-z0-9]*)(.*):",
+      "captures": {
+        "1": {
+          "name": "entity.name.class"
+        },
+        "2": {
+          "name": "variable.parameter"
+        }
+      }
+    },
+    "call": {
+      "match": "\\.([A-Za-z0-9]*)",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        }
+      }
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.jcode"
+}
