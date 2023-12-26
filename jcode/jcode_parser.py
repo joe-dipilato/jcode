@@ -27,3 +27,7 @@ class Parser:
     def parser(self):
         """Get the parser"""
         return self._parser
+
+    def parser(self, text):
+        """parse a string"""
+        parsed = self.parser(text)
