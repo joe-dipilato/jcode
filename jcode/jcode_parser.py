@@ -2,20 +2,28 @@
 from lark import Lark
 
 EBNF = r"""
-value: dict
-     | list
-     | ESCAPED_STRING
-     | SIGNED_NUMBER
-     | "true" | "false" | "null"
+    ?value: dict
+          | list
+          | string
+          | SIGNED_NUMBER      -> number
+          | "true"             -> true
+          | "false"            -> false
+          | "null"             -> null
 
-list : "[" [value ("," value)*] "]"
+    list : "[" [value ("," value)*] "]"
 
-dict : "{" [pair ("," pair)*] "}"
-pair : ESCAPED_STRING ":" value
+    dict : "{" [pair ("," pair)*] "}"
+    pair : string ":" value
 
-%import common.ESCAPED_STRING
-%import common.SIGNED_NUMBER
-"""
+    string : ESCAPED_STRING
+
+    %import common.ESCAPED_STRING
+    %import common.SIGNED_NUMBER
+    %import common.WS
+    %ignore WS
+
+
+    """
 
 class Parser:
     """jcode class"""
@@ -30,4 +38,4 @@ class Parser:
 
     def parse(self, text):
         """parse a string"""
-        return self.parser(text)
+        return self._parser.parse(text)
