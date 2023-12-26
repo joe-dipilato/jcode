@@ -12,11 +12,16 @@ def test_initialize():
 def test_parser_type():
     """Test parser type"""
     p = Parser()
-    assert isinstance(p.parser, Lark(""))
+    assert isinstance(p._parser, Lark)
 
 def test_parsing():
     """test parsing"""
-    
+    text = '{"key": ["item0", "item1", 3.14]}'
+    p = Parser()
+    parsed = p.parse(text)
+    print(parsed)
+
+
 
 # def test_print_string():
 #     """Test printing a string"""

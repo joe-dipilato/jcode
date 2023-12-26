@@ -24,9 +24,12 @@ watch:
     # Wait until a file changes
     watch -g "find . -type f -exec ls -lt {} + | head"
     clear
-    just test
     find . -type f -exec ls -lt {} + | head -1
-    sleep 10
+    just test
+    if [ $? == 0 ] ; then
+      sleep 10
+    fi
+    sleep 2
   done
 test *args='':
   #!/usr/bin/env bash
