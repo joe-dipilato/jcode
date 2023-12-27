@@ -34,7 +34,7 @@ lambda_kwparams: "**" name ","?
 
 ?stmt: simple_stmt | compound_stmt
 ?simple_stmt: small_stmt (";" small_stmt)* [";"] _NEWLINE
-?small_stmt: (expr_stmt | assign_stmt | del_stmt | pass_stmt | flow_stmt | import_stmt | global_stmt | nonlocal_stmt | assert_stmt)
+?small_stmt: (expr_stmt | assign_stmt |  flow_stmt )
 expr_stmt: testlist_star_expr
 assign_stmt: annassign | augassign | assign
 
@@ -47,51 +47,22 @@ augassign: testlist_star_expr augassign_op (yield_expr|testlist)
                    | test_or_star_expr ","  -> tuple
 
 // For normal and annotated assignments, additional restrictions enforced by the interpreter
-del_stmt: "del" exprlist
-pass_stmt: "pass"
-?flow_stmt: break_stmt | continue_stmt | return_stmt | raise_stmt | yield_stmt
-break_stmt: "break"
-continue_stmt: "continue"
+?flow_stmt: return_stmt | yield_stmt
 return_stmt: "return" [testlist]
 yield_stmt: yield_expr
-raise_stmt: "raise" [test ["from" test]]
-import_stmt: import_name | import_from
-import_name: "import" dotted_as_names
-// note below: the ("." | "...") is necessary because "..." is tokenized as ELLIPSIS
-import_from: "from" (dots? dotted_name | dots) "import" ("*" | "(" import_as_names ")" | import_as_names)
-!dots: "."+
-import_as_name: name ["as" name]
-dotted_as_name: dotted_name ["as" name]
-import_as_names: import_as_name ("," import_as_name)* [","]
-dotted_as_names: dotted_as_name ("," dotted_as_name)*
 dotted_name: name ("." name)*
-global_stmt: "global" name ("," name)*
-nonlocal_stmt: "nonlocal" name ("," name)*
-assert_stmt: "assert" test ["," test]
 
-?compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | match_stmt
-              | with_stmt | funcdef | classdef | decorated | async_stmt
-async_stmt: "async" (funcdef | with_stmt | for_stmt)
+?compound_stmt: if_stmt | for_stmt
+              | funcdef | classdef | decorated
 if_stmt: "if" test ":" suite elifs ["else" ":" suite]
 elifs: elif_*
 elif_: "elif" test ":" suite
-while_stmt: "while" test ":" suite ["else" ":" suite]
 for_stmt: "for" exprlist "in" testlist ":" suite ["else" ":" suite]
-try_stmt: "try" ":" suite except_clauses ["else" ":" suite] [finally]
-        | "try" ":" suite finally   -> try_finally
-finally: "finally" ":" suite
-except_clauses: except_clause+
-except_clause: "except" [test ["as" name]] ":" suite
 // NB compile.c makes sure that the default except clause is last
 
 
-with_stmt: "with" with_items ":" suite
 with_items: with_item ("," with_item)*
 with_item: test ["as" name]
-
-match_stmt: "match" test ":" _NEWLINE _INDENT case+ _DEDENT
-
-case: "case" pattern ["if" test] ":" suite
 
 ?pattern: sequence_item_pattern "," _sequence_pattern -> sequence_pattern
         | as_pattern
@@ -262,7 +233,7 @@ _NEWLINE: ( /\r?\n[\t ]*/ | COMMENT )+
 
 // Python terminals
 
-!name: NAME | "match" | "case"
+!name: NAME
 NAME: /[^\W\d]\w*/
 COMMENT: /#[^\n]*/
 
