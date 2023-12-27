@@ -54,7 +54,6 @@ b=2
 """
     p = Parser()
     p.parse(text)
-    print(p)
 
 def test_set():
     """test parsing"""

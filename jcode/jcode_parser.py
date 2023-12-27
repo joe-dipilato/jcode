@@ -49,6 +49,7 @@ EBNF = r"""
         | sum "-" term
     term : variable
        | integer
+       | set
        | paren_expr
     variable : CNAME
     integer : INT
