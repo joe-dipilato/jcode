@@ -27,7 +27,7 @@ watch:
     find . -type f -exec ls -lt {} + | head -1
     just test
     if [ $? == 0 ] ; then
-      sleep 10
+      sleep 5
     fi
     sleep 2
   done

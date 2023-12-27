@@ -2,7 +2,7 @@
 Unit test
 """
 from jcode.jcode_parser import Parser
-from lark import Lark
+from lark import Lark, tree
 
 def test_initialize():
     """Test initialization"""
@@ -16,14 +16,17 @@ def test_parser_type():
 
 def test_parsing():
     """test parsing"""
-    text = '{"key": ["item0", "item1", 3.14]}'
+    text = 'a=1'
     p = Parser()
     parsed = p.parse(text)
-    print(parsed.pretty())
+    assert isinstance(parsed, tree.Tree)
+    assert isinstance(p.tree, tree.Tree)
 
-
-
-# def test_print_string():
-#     """Test printing a string"""
+# def test_transform():
+#     """test transform"""
+#     text = '{"key": ["item0", "item1", 3.14]}'
 #     p = Parser()
-#     assert 1 == p.ebnf
+#     p.parse(text)
+#     transformed = p.transform()
+#     assert isinstance(transformed, dict)
+#     assert transformed["key"] == ["item0", "item1", 3.14]
