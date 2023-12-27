@@ -38,7 +38,12 @@ EBNF = r"""
     expr : test
          | variable "=" expr
     test : sum
-         | sum "<" sum
+         | gt
+         | lt
+         | eq
+    greater_than : sum ">" sum
+    less_than : sum "<" sum
+    equals : sum "==" sum
     sum : term
         | sum "+" term
         | sum "-" term
@@ -82,6 +87,7 @@ class Parser:
         self._parser = Lark(self.ebnf, start="program")
         self._tree = None
         self._transformer = TreeToJson()
+        self._text = ""
 
     @property
     def parser(self):
@@ -96,7 +102,7 @@ class Parser:
     def __str__(self):
         """Get the string"""
         if self.tree:
-            return self.tree.pretty()
+            return f"---\n{self._text}\n---\n{self.tree.pretty()}"
         return self._parser
 
     @property
@@ -106,6 +112,7 @@ class Parser:
 
     def parse(self, text):
         """parse a string"""
+        self._text = text
         self._tree = self._parser.parse(text)
         return self._tree
 

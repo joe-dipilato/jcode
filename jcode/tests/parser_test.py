@@ -16,12 +16,38 @@ def test_parser_type():
 
 def test_parsing():
     """test parsing"""
-    text = 'a=1;'
+    text = 'a=1'
     p = Parser()
     parsed = p.parse(text)
-    print(p)
     assert isinstance(parsed, tree.Tree)
     assert isinstance(p.tree, tree.Tree)
+
+def test_equals():
+    """test parsing"""
+    text = 'a=1'
+    p = Parser()
+    p.parse(text)
+
+def test_add():
+    """test parsing"""
+    text = '1+2'
+    p = Parser()
+    p.parse(text)
+
+def test_set_add():
+    """test parsing"""
+    text = 'a=1+2'
+    p = Parser()
+    p.parse(text)
+    print(p)
+
+def test_set_equals():
+    """test parsing"""
+    text = 'a=1==2'
+    p = Parser()
+    p.parse(text)
+    print(p)
+
 
 # def test_transform():
 #     """test transform"""
