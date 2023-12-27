@@ -27,13 +27,13 @@ EBNF2 = r"""
 
 # https://github.com/lark-parser/lark/blob/master/lark/grammars/common.lark
 EBNF = r"""
-    statement : "if" paren_expr statement
-              | "if" paren_expr statement "else" statement
-              | "while" paren_expr statement
-              | "do" statement "while" paren_expr
-              | "{" statement* "}"
-              | expr
     program : statement+
+    statement : "{" statement* "}"
+              | any_expr
+    any_expr : paren_expr
+             | expr
+    set : any_expr "," any_expr
+        | any_expr "," set
     paren_expr : "(" expr ")"
     expr : test
          | variable "=" expr

@@ -45,6 +45,25 @@ def test_set_equals():
     text = 'a=1==2'
     p = Parser()
     p.parse(text)
+
+def test_multi_statement():
+    """test parsing"""
+    text = """
+a=(1)
+b=2
+"""
+    p = Parser()
+    p.parse(text)
+    print(p)
+
+def test_set():
+    """test parsing"""
+    text = """
+1,2,3
+b=x,y,z
+"""
+    p = Parser()
+    p.parse(text)
     print(p)
 
 
