@@ -1,7 +1,7 @@
 """jcode"""
 from lark import Lark, Transformer
 
-EBNF = r"""
+EBNF2 = r"""
     ?value: dict
           | list
           | string
@@ -25,6 +25,39 @@ EBNF = r"""
 
     """
 
+# https://github.com/lark-parser/lark/blob/master/lark/grammars/common.lark
+EBNF = r"""
+    statement : "if" paren_expr statement
+              | "if" paren_expr statement "else" statement
+              | "while" paren_expr statement
+              | "do" statement "while" paren_expr
+              | "{" statement* "}"
+              | expr
+    program : statement+
+    paren_expr : "(" expr ")"
+    expr : test
+         | variable "=" expr
+    test : sum
+         | sum "<" sum
+    sum : term
+        | sum "+" term
+        | sum "-" term
+    term : variable
+       | integer
+       | paren_expr
+    variable : CNAME
+    integer : INT
+    STRING : ESCAPED_STRING
+
+    %import common.CNAME
+    %import common.ESCAPED_STRING
+    %import common.INT
+    %import common.WS
+    %ignore WS
+
+    """
+
+
 class TreeToJson(Transformer):
     def string(self, s):
         (s,) = s
@@ -46,7 +79,7 @@ class Parser:
     """jcode class"""
     def __init__(self):
         self.ebnf = EBNF
-        self._parser = Lark(self.ebnf, start="value")
+        self._parser = Lark(self.ebnf, start="program")
         self._tree = None
         self._transformer = TreeToJson()
 
@@ -60,11 +93,11 @@ class Parser:
         """Get the tree"""
         return self._tree
 
-    @property
     def __str__(self):
         """Get the string"""
-        return self.tree.pretty()
-
+        if self.tree:
+            return self.tree.pretty()
+        return self._parser
 
     @property
     def transformer(self):

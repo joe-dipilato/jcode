@@ -16,9 +16,10 @@ def test_parser_type():
 
 def test_parsing():
     """test parsing"""
-    text = 'a=1'
+    text = 'a=1;'
     p = Parser()
     parsed = p.parse(text)
+    print(p)
     assert isinstance(parsed, tree.Tree)
     assert isinstance(p.tree, tree.Tree)
 
