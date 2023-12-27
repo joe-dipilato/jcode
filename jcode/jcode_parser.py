@@ -1,67 +1,12 @@
 """jcode"""
+from pathlib import Path
+import os 
+
 from lark import Lark, Transformer
-
-EBNF2 = r"""
-    ?value: dict
-          | list
-          | string
-          | SIGNED_NUMBER      -> number
-          | "true"             -> true
-          | "false"            -> false
-          | "null"             -> null
-
-    list : "[" [value ("," value)*] "]"
-
-    dict : "{" [pair ("," pair)*] "}"
-    pair : string ":" value
-
-    string : ESCAPED_STRING
-
-    %import common.ESCAPED_STRING
-    %import common.SIGNED_NUMBER
-    %import common.WS
-    %ignore WS
-
-
-    """
+dir_path = Path(os.path.realpath(__file__)).parent
 
 # https://github.com/lark-parser/lark/blob/master/lark/grammars/common.lark
-EBNF = r"""
-    program : statement+
-    statement : "{" statement* "}"
-              | any_expr
-    any_expr : paren_expr
-             | expr
-    set : any_expr "," any_expr
-        | any_expr "," set
-    paren_expr : "(" expr ")"
-    expr : test
-         | variable "=" expr
-    test : sum
-         | greater_than
-         | less_than
-         | equals_to
-    greater_than : sum ">" sum
-    less_than : sum "<" sum
-    equals_to : sum "==" sum
-    sum : term
-        | sum "+" term
-        | sum "-" term
-    term : variable
-       | integer
-       | set
-       | paren_expr
-    variable : CNAME
-    integer : INT
-    STRING : ESCAPED_STRING
-
-    %import common.CNAME
-    %import common.ESCAPED_STRING
-    %import common.INT
-    %import common.WS
-    %ignore WS
-
-    """
+EBNF = (dir_path / "grammar.lark").read_text(encoding="utf-8")
 
 
 class TreeToJson(Transformer):
