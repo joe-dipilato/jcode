@@ -38,12 +38,12 @@ EBNF = r"""
     expr : test
          | variable "=" expr
     test : sum
-         | gt
-         | lt
-         | eq
+         | greater_than
+         | less_than
+         | equals_to
     greater_than : sum ">" sum
     less_than : sum "<" sum
-    equals : sum "==" sum
+    equals_to : sum "==" sum
     sum : term
         | sum "+" term
         | sum "-" term

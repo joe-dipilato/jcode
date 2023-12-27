@@ -39,7 +39,6 @@ def test_set_add():
     text = 'a=1+2'
     p = Parser()
     p.parse(text)
-    print(p)
 
 def test_set_equals():
     """test parsing"""
