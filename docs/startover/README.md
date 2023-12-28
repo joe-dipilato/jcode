@@ -127,13 +127,33 @@ st3=a:a;b:b+1 # Set with maps a:a and b:b+1. no namespace evaluation in map
 add1=a:a+1
 addab=a,b:a+b
 swap=l,r:r,l
-
 ```
 
-#### Function.Execution
+### Execution
 
 ```python
-# Functions 
+# Objects can be separated into the following categories:
+#   executable vs not-executable
+#   executable:
+#        takes-args vs no-args
+```
+
+}}} TODO: set not executable?
+
+#### Not-Executable
+
+```python
+1 # not-executable
+"abc" # not-executable
+1,2,3 # not-executable
+a:1,b:2 # not-executable
+```
+
+#### Executable
+
+```python
+# Objects are executed whenever they are the first object in a statement.
+
 ```
 
 ### Indentation
