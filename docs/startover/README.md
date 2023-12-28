@@ -95,9 +95,9 @@ ns4=: # a namespace with no symbol names
 
 ```python
 # A routine is a series of instructions associated with a namespace
-rt1=:1 # a routine that executes and returns 1
-rt2=:a # a routine that executes and returns the symbol a in the namespace
-rt3=:a+1,b+1 # a routine that executes the set: a+1,b+1 based on the namespace 
+rt1=1 # a routine that executes and returns 1
+rt2=a # a routine that executes and returns the symbol a in the namespace
+rt3=a+1,b+1 # a routine that executes the set: a+1,b+1 based on the namespace
 ```
 
 ### Map
@@ -112,37 +112,28 @@ mp3=a,b:a+1,b+1 # associates symbol names: a,b with routine: a+1,b+1
 ### Set
 
 ```python
-# 
+# A set is a collection of contents into a single object
+st1=1,2 # set with values 1 and 2
+a=1
+b=2
+st2=a,b # set with values 1 and 2 evaluated from the namespace
+st3=a:a;b:b+1 # Set with maps a:a and b:b+1. no namespace evaluation in map
 ```
 
 ### Function
 
 ```python
-# A Function is a mapping of arguments to a routine
+# A Function is another name for a map
+add1=a:a+1
+addab=a,b:a+b
+swap=l,r:r,l
+
 ```
 
-#### Function.Arguments
+#### Function.Execution
 
 ```python
-# Arguments are a set of variables or values
-```
-
-#### Function.Routine
-
-```python
-# A Routine is a sequence of instructions
-```
-
-#### Functions.Arguments
-
-```python
-# 
-```
-
-#### Functions.Execution
-
-```python
-# 
+# Functions 
 ```
 
 ### Indentation
