@@ -143,17 +143,57 @@ swap=l,r:r,l
 #### Not-Executable
 
 ```python
-1 # not-executable
-"abc" # not-executable
-1,2,3 # not-executable
-a:1,b:2 # not-executable
+1 # 1 was not executed
+number=1
+number # number was not executed
+
+"abc" # "abc" was not executed
+string="abc"
+string # string was not executed
+
+1,2,3 # 1,2,3 was not executed
+num_set=1,2,3
+num_set # num_set was not executed
+
+a:1,b:2 # a:1,b:2 was not executed
+simple_map=a:1,b:2
+simple_map # simple_map was not executed
 ```
 
 #### Executable
 
-```python
-# Objects are executed whenever they are the first object in a statement.
+}}} TODO: how to execute functions with no args
 
+```python
+a:a+1 # a:a+1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
+3 a:a+1 # a:a+1 was executed and returned 4
+# when a function pointer is preceded by an object and a space, the function is executed with the preceding object
+# as the argument to the function.
+
+# All functions take exactly 1 argument even if the function is defined with no arguments
+:1 # :1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
+~ :1 # :1 was executed and returned 1
+# :1 is equivalent to ~:1
+```
+
+```python
+# Functions can also be executed when followed by parentheses enclosing arguments
+a:a+1(3) # executed and returned 4
+:1(~) # executed and returned 1
+:1() # This is equivalent to :1(~). executed and returned 1.
+```
+
+```python
+return1=:1 # Assignments are not executions. return1 was not-executed on this line
+return1 # return1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
+~ return1 # return1 was executed and returned 1
+return2=. return1 # return1 is executed. return2 is set to 1
+
+
+return1=:1 # Assignments are not executions. return1 was not-executed on this line
+return1 # return1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
+. return1 # return1 was executed and returned 1
+return2=. return1 # return1 is executed. return2 is set to 1
 ```
 
 ### Indentation
