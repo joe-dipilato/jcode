@@ -81,10 +81,32 @@ some_variable # The symbol 'some_variable' evalues to the value 3.14
 
 }}} TODO: basic datastructures
 
+### Namespace
+
+```python
+# A namespace is a set of named symbols
+ns1=a: # a namespace with symbol name a
+ns2=a,b,c: # a namespace with symbol names a, b, and c
+ns3=~: # a namespace with no symbol names
+ns4=: # a namespace with no symbol names
+```
+
+### Routine
+
+```python
+# A routine is a series of instructions associated with a namespace
+rt1=:1 # a routine that executes and returns 1
+rt2=:a # a routine that executes and returns the symbol a in the namespace
+rt3=:a+1,b+1 # a routine that executes the set: a+1,b+1 based on the namespace 
+```
+
 ### Map
 
 ```python
-# 
+# A map is a datastructure that associates a namespace with a routine
+mp1=a:1 # associates symbol name 'a' with routine: 1
+mp2=b:b # associates symbol name 'b' with routine: b
+mp3=a,b:a+1,b+1 # associates symbol names: a,b with routine: a+1,b+1
 ```
 
 ### Set
