@@ -134,8 +134,6 @@ swap=l,r:r,l
 ```python
 # Objects can be separated into the following categories:
 #   executable vs not-executable
-#   executable:
-#        takes-args vs no-args
 ```
 
 }}} TODO: set not executable?
@@ -144,61 +142,109 @@ swap=l,r:r,l
 
 ```python
 1 # 1 was not executed
-number=1
-number # number was not executed
-
-"abc" # "abc" was not executed
-string="abc"
-string # string was not executed
-
 1,2,3 # 1,2,3 was not executed
-num_set=1,2,3
-num_set # num_set was not executed
-
 a:1,b:2 # a:1,b:2 was not executed
-simple_map=a:1,b:2
-simple_map # simple_map was not executed
 ```
 
 #### Executable
 
-}}} TODO: how to execute functions with no args
-
 ```python
 a:a+1 # a:a+1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
-3 a:a+1 # a:a+1 was executed and returned 4
 # when a function pointer is preceded by an object and a space, the function is executed with the preceding object
 # as the argument to the function.
+3 a:a+1 # a:a+1 was executed and returned 4
+# Functions can also be executed when followed by parentheses enclosing arguments
+a:a+1(3) # executed and returned 4
+add1=a:a+1 # add1 now holds the function pointer to a:a+1
+3 add1 # evaluates to 4
 
 # All functions take exactly 1 argument even if the function is defined with no arguments
 :1 # :1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
 ~ :1 # :1 was executed and returned 1
 # :1 is equivalent to ~:1
-```
-
-```python
-# Functions can also be executed when followed by parentheses enclosing arguments
-a:a+1(3) # executed and returned 4
 :1(~) # executed and returned 1
 :1() # This is equivalent to :1(~). executed and returned 1.
+return1=:1 # return1 now holds the function pointer to :1
+~ return1 # evaluates to 1
 ```
 
+### Sequences
+
 ```python
-return1=:1 # Assignments are not executions. return1 was not-executed on this line
-return1 # return1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
-~ return1 # return1 was executed and returned 1
-return2=. return1 # return1 is executed. return2 is set to 1
+# Expressions separated by spaces create a sequence
+1 1,2,3 "abc" a:1,b:2 # This is a sequence of 4 expressions
+# Expressions in a sequence are executed from left to right.
+# The evaluation of the sequence is just the evaluation of the rightmost expression.
+# In this case, the sequence evaluates to the set a:1,b:2
 
-
-return1=:1 # Assignments are not executions. return1 was not-executed on this line
-return1 # return1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
-. return1 # return1 was executed and returned 1
-return2=. return1 # return1 is executed. return2 is set to 1
+# Variables can be set based on the evaluation of a sequence
+seqres=7,7,7 9.5 "abc",1 # seqres is set to the set: "abc",1
 ```
 
 ### Indentation
 
+#### Without Indentation
+
+```python
+# Each new line continues the previous sequence at the same indendation level
+1
+1,2,3
+"abc"
+a:1,b:2
+# This multiline sequence is identical to: 1 1,2,3 "abc" a:1,b:2
+```
+
+#### With Indentation
+
+```python
+# Different objects and syntaxes define different behaviour for how indended sequences are handled
+1
+  5
+  3
+# When a simple value is followed by an indented block, the indented block is only evaluated
+#   if the simple value evaluates to True
+# In this case, the indented sequence 5 3 is evaluated.
+# The return value of the simple value is set to the evaluation of the indented sequence.
+# The sequence 5 3 evalues to the rightmost expression of 3, so the whole statement returns 3.
+
+-2
+  5
+# Since -2 does not evaluate to True, 5 is not evaluated, and the original value of -2 is returned
+
+indentres=
+  1
+    5
+    3
+# An Assignment operation followed by an indent, simply assigns the result of the indented sequence,
+# just as if the block was on the same line.
+# indentres is assigned to the value: 3
+```
+
 ### Comments
+
+```python
+
+```
+
+## Advanced
+
+### Sequences with assignment
+
+```python
+
+```
+
+### Sequences with functions
+
+```python
+
+```
+
+### Accessing memebers of a set
+
+```python
+
+```
 
 ## datastructures
 
