@@ -209,7 +209,12 @@ a:1,b:2
 
 -2
   5
-# Since -2 does not evaluate to True, 5 is not evaluated, and the original value of -2 is returned
+  6
+# Since -2 does not evaluate to True, 5 6 is not evaluated, and the original value of -2 is returned
+
+# Indented blocks can also be represented on a single line with '{' and '}' characters
+-2{5 6} # This is equivalent to the above 
+# '{' is indentical to an indendation of all items in the following sequence. '}' is identical to a deindentation.
 
 indentres=
   1
@@ -218,6 +223,14 @@ indentres=
 # An Assignment operation followed by an indent, simply assigns the result of the indented sequence,
 # just as if the block was on the same line.
 # indentres is assigned to the value: 3
+
+indentres2=
+  3
+    4
+    5
+  -3
+    6
+# indentres2 is assigned to the value: -3
 ```
 
 ### Comments
