@@ -13,6 +13,82 @@
   - [Map](#map)
   - [Set](#set)
 
+## Character Map
+
+```python
+# ALWAYS
+"#" # Comment
+"_" # Underscore character
+'"' # A String
+"\"" # A backslash
+```
+
+}}} TODO: AND vs kind
+
+```python
+"a&b" # Logical AND (With short circuit)
+" &b " # TODO
+" b& " # TODO
+" & " # TODO
+
+"a|b" # Logical OR (With short circuit)
+" |b " # None OR b (With short circuit)
+" b| " # TODO
+" | " # OR Else (With short circuit)
+
+"a^b" # A XOR B
+" ^b " # TODO
+" b^ " # TODO
+" ^ " # TODO
+
+"a!b" # TODO
+" !b " # NOT b
+" b! " # TODO
+" ! " # TODO
+```
+
+```python
+"a*b" # a times b
+"a-b" # a minus b
+"a+b" # a plus b
+"a/b" # a divided by b
+"a%b" # a modulus b
+```
+
+```python
+"a=b" # a is assigned to b
+"a:b" # Map a to b
+```
+
+```python
+"a`b" # TODO
+"a@b" # At??? TODO
+"a~b" # TODO
+"a$b" # TODO
+"a?b" # TODO
+```
+
+```python
+"a'b" # Builtin attribute b of object a
+"a.b" # Object specific attribute b of object a
+```
+
+```python
+"a,b" # The set with items 'a and b'
+"a;b" # TODO
+```
+
+```python
+"a<b" # TODO
+"a>b" # TODO
+```
+
+```python
+"a()b" # TODO
+"a[]b" # TODO
+"a{}b" # TODO
+```
+
 ## Basic Syntax
 
 ### Symbols
@@ -148,6 +224,8 @@ a:1,b:2 # a:1,b:2 was not executed
 
 #### Executable
 
+}}} TODO: Execution without a space?
+
 ```python
 a:a+1 # a:a+1 was not executed, it evaluates to a function pointer e.g. <ptr:xyz>
 # when a function pointer is preceded by an object and a space, the function is executed with the preceding object
@@ -223,6 +301,7 @@ indentres=
 # An Assignment operation followed by an indent, simply assigns the result of the indented sequence,
 # just as if the block was on the same line.
 # indentres is assigned to the value: 3
+# The statements are evaluated in the following order: 1 (true), 5, 3
 
 indentres2=
   3
@@ -231,7 +310,43 @@ indentres2=
   -3
     6
 # indentres2 is assigned to the value: -3
+# The statements are evaluated in the following order: 3 (true), 4, 5, -3 (false) <6 is not evaluated>
 ```
+
+### Evaluation Delimiters
+
+```python
+# The following items can occur sequentially: map, set, sequence, function_call, Assignment
+a:1 # A map
+1,2 # A set
+1 2 # A sequence
+7 add1 # A Function Call
+one=1 # An Assignment
+```
+
+}}} TODO: a map to a map?
+}}} TODO: a map of 2 sets?
+
+```python
+# MAPS
+a:b:2 #= (a):(b:2) A map to a map
+a:1,2 #= (a):(1,2) A map to a set
+a,b:1,2 #= (a,b):(1,2) a map of two sets
+a:{1 2} #= (a):(1 2) a map to a sequence
+a:{7 add1} #= (a):(7 add1) a map to a function call
+a:one=1 #= (a):(one=1) a map to an assignment
+```
+
+}}} TODO: a set of sequences?
+
+```python
+# SETS
+a:1;b:2;c:3 #= (a:1),(b:2),(c:3) A set of maps
+1,2;3,4;5,6 #= (1,2),(3,4),(5,6) A set of sets
+1 2;3 4;5 6 #= (1 2),(3 4),(5 6) A set of sequences
+
+```
+
 
 ### Comments
 
