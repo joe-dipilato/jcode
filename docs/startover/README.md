@@ -16,7 +16,7 @@
 ```python
 # read a file
 Pathlib# read a file
-Pathlib,path ‘import
+Pathlib,path 'import
 Contents = "file.jc".path.read.split
 F="file.jc"
 E="Utf-8"
@@ -27,83 +27,92 @@ P = "file.jc","Utf-8"$path = (F,E)$path  not … F;E$path = (F),(E$path)
 R=P.read()
 R = () -> P.read
 R = ()$P.read = $P.read
-R = "file.jc","Utf-8"$path,^read = ((("file.jc","Utf-8")$path),~)$pathobj.read
+R = "file.jc","Utf-8"$path.read = (("file.jc","Utf-8")$path)$pathobj'read
 S=R.split("\n",1)
 S = ("\n",1) -> R.split
 S = "\n",1$R.split
-S = "file.jc","Utf-8"$path,^read,"\n",1^split = 
-  ((((("file.jc","Utf-8")$path),~)$pathobj.read),"\n",1)$str.split
+S = "file.jc","Utf-8"$path.read,"\n",1.split = 
+  (((("file.jc","Utf-8")$path)$pathobj'read),"\n",1)$str'split
 
-"A","b"^split
-"A",^split
+"A","b".split
+"A",.split
 
-This is saying, lookup attribute name "split" from the return value type of the first arg ("A") which is (str) and pass the args in ("A","b") to the attribute. str.split("A","b")
+# This is saying, lookup attribute name "split" from the return value type of the first arg ("A") which is (str) and pass the args in ("A","b") to the attribute. str.split("A","b")
 
 "A","b"$path
 
-This is saying pass the args into the symbol "path" in the namespace. 
-  ( path("A","b") )
+#This is saying pass the args into the symbol "path" in the namespace. 
+#  ( path("A","b") )
 
 path("A").read(1)
-"A"$path,1^read # saves 2 chars
+"A"$path,1.read # saves 2 chars
 
 P="/base/path/file.jc"
 Cs="Utf-8","other"
-P,"/"^split
+P,"/".split
 
-str = s:
+
+# If dict vars aren’t defined, use from outer scope.
+
+thing = s:
   val=s,
   v2=self:s,
   O=a:a,
-  split=self,param:…
+  split=self,param:...
   get=self:s,
   g2=self:self.val
 
 # If dict vars aren’t defined, use from outer scope.
 
-S=str("abc")
-S,""^split
-S.val #= "abc"
-S,^get #= "abc"
-S,^g2 #= "abc"
-S.val = "def"
-S,^get #= "abc"
-S,^g2 #= "def"
-"X"$S.O #= "X"
-S,^O #= S
-
-# ….?
-
-str = s:
-  val=s,
-  v2=self:s,
-  O=a:a,
-  split=self,param:…
-  get=self:s,
-  g2=self:self.val
-
-# If dict vars aren’t defined, use from outer scope.
-
-S="abc"$str
+S="abc"$thing
 S’val #= "abc"
-S,"".split
+"",S.split
 S.v2 #= "abc"
 S.get #= "abc"
 S.g2 #= "abc"
-S.val = "def"
+S.val #= "def"
 S.get #= "abc"
 S.g2 #= "def"
 "X"$S’O #= "X"
-S.O #= S
-
+S.O #= S$S'O #= S$a:a #= S
 
 C=v:
   _a=v,
   _b=0,
-  U=self,b:self._b=b
-  a=self:self._a
-  b=self:self._b
+  U=self,b,c:self'_b=b+c,
+  a=self:self'_a,
+  b=self:self'_b
 
+x=2$C
+x.a #= 2
+x.b #= 0
+x.U #= x$x'U #= x$self,b,c:self'_b=b+c # error
+x,3,4.U  #= x,3,4$self,b,c:self'_b=b+c
+                           #= x'_b=3+4
+x.b #= 7
+
+a=:
+  f=5,
+  g=self,x,y:self,x+y
+  h=self:3
+  i=self:self'f
+b=2
+c=4
+args=a,b,c
+args.g #= args$args[0]'g #= a,b,c$a'g #= a,b,c$self,x,y:self,x+y
+       #= a,6
+args.f #= args$args[0]'f #= a,b,c$a'f #= a,b,c$5 #= error
+a,b,c.f                  #= a,b,c$a'f #= a,b,c$5 #= error
+a.f #=    args$args[0]'f #= a$a'f #= a$5 #= error
+a'f #= 5
+a.h #=    args$args[0]'h #= a$a'h #= a$self:3 #= 3
+a.i #=                   #= a$a'i #= a$self:self'f #= 5
+
+# instead of using self, we can use an _ item
+
+a=:
+  f=5,
+  i=_:_'f
 
 ```
 
