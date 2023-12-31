@@ -15,9 +15,38 @@
 
 ```python
 # read a file
-Pathlib# read a file
 Pathlib,path 'import
-Contents = "file.jc".path.read.split
+# get set of lines
+lines = "file.jc"$path.read.splitlines
+#lines=[line for line in lines if line.startswith("#")]
+lines@line # lines as line
+lines@line?line,"#".startswith<line.lower # lowercase comment lines
+lines@line?line,"#".startswith<line.lower|line # lines with lowercase comments
+lines@@line<line.lower # lines = lowercase lines
+lines@@line?line,"#".startswith<line.lower|?line,".".startswith<line.upper|"other"
+lines@@line
+  ?line,"#".startswith
+    <line.lower
+  |?line,".".startswith
+    <line.upper
+  |
+    "other" #implicit return last statement without <
+    
+content,comment=lines@line
+  ?line,"#".startswith<,line # add comment
+  c=line.split@word
+    word@@char # capitalize first A of each word
+      ?char=="a"<"A"|char
+  c" ".join, # add content
+
+# scrub comments
+lines@line
+  line,"#".startswith
+    < #= continue?
+  contents[,],line.append # default to empty set
+contents$print # default applies even if not run
+
+
 F="file.jc"
 E="Utf-8"
 P=path(F,E)
@@ -174,8 +203,8 @@ a=:
 ```
 
 ```python
-"a'b" # Builtin attribute b of object a
-"a.b" # Object specific attribute b of object a
+"a'b" # attribute b of object a
+"a.b" # execute function b on object a
 ```
 
 ```python
