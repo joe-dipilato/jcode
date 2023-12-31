@@ -13,6 +13,102 @@
   - [Map](#map)
   - [Set](#set)
 
+```python
+# read a file
+Pathlib# read a file
+Pathlib,path ‘import
+Contents = "file.jc".path.read.split
+F="file.jc"
+E="Utf-8"
+P=path(F,E)
+P = (F,E) -> path
+P = "file.jc","Utf-8"$path = (F,E)$path  not … F;E$path = (F),(E$path)
+…. $ pulls left past commas, not semicolons
+R=P.read()
+R = () -> P.read
+R = ()$P.read = $P.read
+R = "file.jc","Utf-8"$path,^read = ((("file.jc","Utf-8")$path),~)$pathobj.read
+S=R.split("\n",1)
+S = ("\n",1) -> R.split
+S = "\n",1$R.split
+S = "file.jc","Utf-8"$path,^read,"\n",1^split = 
+  ((((("file.jc","Utf-8")$path),~)$pathobj.read),"\n",1)$str.split
+
+"A","b"^split
+"A",^split
+
+This is saying, lookup attribute name "split" from the return value type of the first arg ("A") which is (str) and pass the args in ("A","b") to the attribute. str.split("A","b")
+
+"A","b"$path
+
+This is saying pass the args into the symbol "path" in the namespace. 
+  ( path("A","b") )
+
+path("A").read(1)
+"A"$path,1^read # saves 2 chars
+
+P="/base/path/file.jc"
+Cs="Utf-8","other"
+P,"/"^split
+
+str = s:
+  val=s,
+  v2=self:s,
+  O=a:a,
+  split=self,param:…
+  get=self:s,
+  g2=self:self.val
+
+# If dict vars aren’t defined, use from outer scope.
+
+S=str("abc")
+S,""^split
+S.val #= "abc"
+S,^get #= "abc"
+S,^g2 #= "abc"
+S.val = "def"
+S,^get #= "abc"
+S,^g2 #= "def"
+"X"$S.O #= "X"
+S,^O #= S
+
+# ….?
+
+str = s:
+  val=s,
+  v2=self:s,
+  O=a:a,
+  split=self,param:…
+  get=self:s,
+  g2=self:self.val
+
+# If dict vars aren’t defined, use from outer scope.
+
+S="abc"$str
+S’val #= "abc"
+S,"".split
+S.v2 #= "abc"
+S.get #= "abc"
+S.g2 #= "abc"
+S.val = "def"
+S.get #= "abc"
+S.g2 #= "def"
+"X"$S’O #= "X"
+S.O #= S
+
+
+C=v:
+  _a=v,
+  _b=0,
+  U=self,b:self._b=b
+  a=self:self._a
+  b=self:self._b
+
+
+```
+
+
+
 ## Character Map
 
 ```python
