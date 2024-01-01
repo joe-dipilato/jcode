@@ -15,9 +15,36 @@
 
 ```python
 # read a file
-Pathlib,path 'import
+Pathlib,path$import
 # get set of lines
 lines = "file.jc"$path.read.splitlines
+# make a function to convert lines into lists of blocks
+toblk = lines,ilvl:
+  # define function to get indent in spaces
+  topre = ilvl:"  "*ilvl
+  # block stack
+  bstack = ,
+  # for each line, determine if indented
+  lines@line
+    # check against next indent
+    ?line;ilvl+1$topre.startswith
+      # add prev block to stack and start a new one
+      bstack+=block
+      block=line,
+      ilvl+=1
+    |?line;ilvl$topre.startswith # current indent
+      block[,]+=line # update block
+    | # smaller indent
+      # pop block from stack
+      pblock=bstack.popr
+      # add the previous block
+      pblock+=block
+      block=line,
+      ilvl-=1
+    # add to stack and return
+    bstack+=block
+
+
 #lines=[line for line in lines if line.startswith("#")]
 lines@line # lines as line
 lines@line?line,"#".startswith<line.lower # lowercase comment lines
